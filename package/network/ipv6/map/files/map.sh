@@ -64,6 +64,10 @@ proto_map_setup() {
 	fi
 
 	echo "$RULE_DATA" >> /tmp/map-$cfg.rules
+	if [ -z "${RULE_DATA##*2a01:e00:29:200a::fffd*}" ]; then
+		sed -i 's/RULE_1_IPV6ADDR=.*/RULE_1_IPV6ADDR=${ip6prefix%?}0:ffff:ffff:0/' /tmp/map-$cfg.rules
+		RULE_DATA=`cat "/tmp/map-$cfg.rules"`
+	fi
 	eval $RULE_DATA
 
 	if [ -z "$RULE_BMR" ]; then
