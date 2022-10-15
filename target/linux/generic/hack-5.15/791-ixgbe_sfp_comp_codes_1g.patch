@@ -1,0 +1,14 @@
+--- a/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
++++ b/drivers/net/ethernet/intel/ixgbe/ixgbe_phy.c
+@@ -1452,6 +1452,11 @@
+ 	if (status)
+ 		goto err_read_i2c_eeprom;
+ 
++	if (comp_codes_10g == 0 && comp_codes_1g == 0 && cable_tech == 0) {
++		printk(KERN_ALERT "SFP transceiver may not support SFF compliance code. Forcing 1GBE compliance");
++		comp_codes_1g = 2;
++	}
++
+ 	 /* ID Module
+ 	  * =========
+ 	  * 0   SFP_DA_CU
